@@ -7,7 +7,7 @@ class User < ApplicationRecord
  has_many :following_user, through: :follower, source: :followed
  has_many :followed,class_name:"Relationship",foreign_key:"followed_id",dependent: :destroy
  has_many :follower_user, through: :followed, source: :follower
- 
+
  has_many :comments, dependent: :destroy
  has_many  :books, dependent: :destroy
  has_many  :favorites, dependent: :destroy
@@ -26,4 +26,19 @@ class User < ApplicationRecord
 
   validates :name, length: {maximum: 20, minimum: 2}, uniqueness: true
   validates :introduction,    length: { maximum: 50 }
+
+  def self.search(search,word)
+    if search == "forward_match"
+      @user = User.where("name LIKE?","#{word}%")
+    elsif search == "backward_match"
+      @user = User.where("name LIKE?","%#{word}")
+    elsif search == "perfect_match"
+     @user = User.where("#{word}")
+    elsif search == "partial_match"
+     @user = User.where("name LIKE?","%#{word}%")
+    else
+    @user = User.all
+    end
+  end
+
 end
