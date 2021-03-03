@@ -1,0 +1,19 @@
+<h2>フォロー一覧</h2>
+<table>
+  <tr>
+    <th>image</th>
+    <th>name</th>
+  </tr>
+    <% @user.following_user.where.not(id:current_user.id).each do |user|%>
+    <tr>
+    <td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %></td>
+    <td><%= "name:#{user.name}introduction:#{user.introduction}"%></td>
+    <% if current_user.following?(user)%>
+    <td><%= link_to 'フォロー外す',unfollow_path(user.id),method: :post %></td>
+    <% else %>
+    <td><%= link_to 'フォローする',follow_path(user.id),method: :post %></td>
+    <% end %>
+    <td><%= link_to "show",user_path(user)%></td>
+    <% end %>
+  </tr>
+</table>
