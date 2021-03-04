@@ -53,23 +53,17 @@
         <% end %>
         </tr>
       </table>
-      <div class="comments">
-      <% @book.comments.each do |comment| %>
-      <%= attachment_image_tag(comment.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %>
-      <%= comment.user.name %>
-      <%= comment.comment %>
-      <% if comment.user == current_user %>
-      <%= link_to "destroy", book_comment_path(comment.book,comment), method: :delete, class: "btn btn-sm btn-danger" %>
-      <% end %>
-      <% end %>
-    </div>
 
+      <div id="book_<%= @book.id %>">
+         <%= render 'books/show', book: @book %>
+      </div>
       <div class="new-comment">
-        <%= form_with(model:[@book, @comment], local: true) do |f| %>
+        <%= form_with model:[@book, @comment],remote: true do |f| %>
         <%= f.text_area :comment, rows:'5',placeholder: "コメントをここに" %>
         <%= f.submit "送信する" %>
         <% end %>
       </div>
+
     </div>
 
 
