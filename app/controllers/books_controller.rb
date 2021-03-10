@@ -11,6 +11,7 @@ class BooksController < ApplicationController
   end
 
   def create
+     NoticeMailer.greeting.deliver_now
     @book = Book.new(book_params)
     @book.user_id = current_user.id
     if @book.save
